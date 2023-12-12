@@ -30,11 +30,28 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            # Update package lists
             sudo apt-get -y update
-            sudo apt-get install -y apache2
+            
+            # Install Apache if not already installed
+            if ! which apache2 > /dev/null; then
+               sudo apt-get install -y apache2
+            fi
+            
+            # Start and enable Apache service
             sudo systemctl start apache2
             sudo systemctl enable apache2
-            cd home
-            sudo rm -rf /var/www/html/*
-            sudo mv website/* /var/www/html
+            
+            # Assuming 'website' directory is in the current user's home directory
+            cd ~/website
+            
+            # Check if directory change was successful
+            if [ $? -eq 0 ]; then
+                # Remove existing files in Apache's root directory and move new files
+                sudo rm -rf /var/www/html/*
+                sudo mv * /var/www/html/
+            else
+                echo "Failed to find 'website' directory."
+                exit 1
+            fi
             
