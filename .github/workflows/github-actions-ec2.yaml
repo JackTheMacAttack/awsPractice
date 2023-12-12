@@ -1,3 +1,5 @@
+name: Push-to-EC2
+
 # trigger on main branch update
 on:
   push:
