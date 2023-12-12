@@ -7,7 +7,7 @@ on:
 jobs: 
   deploy:
     name: Deploy to EC2 on master branch push
-    runs-on: Linux/UNIX
+    runs-on: ubuntu
 
     steps:
       - name: Checkout the files
